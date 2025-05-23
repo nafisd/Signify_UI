@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:video_player/video_player.dart';
 
 class CardDetailPage extends StatefulWidget {
@@ -13,34 +15,41 @@ class CardDetailPage extends StatefulWidget {
 class _CardDetailPageState extends State<CardDetailPage> {
   late VideoPlayerController _controller;
   Timer? _stopTimer;
+  String _description = '';
+  Duration _start = Duration.zero;
+  Duration _end = Duration.zero;
+  bool _dataLoaded = false;
 
-  // Dummy segment data
-  final Map<String, Map<String, Duration>> _segments = {
-    'A': {'start': Duration(seconds: 0), 'end': Duration(seconds: 2)},
-    'B': {'start': Duration(seconds: 2), 'end': Duration(seconds: 4)},
-    'C': {'start': Duration(seconds: 4), 'end': Duration(seconds: 6)},
-    'D': {'start': Duration(seconds: 6), 'end': Duration(seconds: 8)},
-    'E': {'start': Duration(seconds: 8), 'end': Duration(seconds: 10)},
-    'F': {'start': Duration(seconds: 10), 'end': Duration(seconds: 12)},
-    'G': {'start': Duration(seconds: 12), 'end': Duration(seconds: 14)},
-    'H': {'start': Duration(seconds: 14), 'end': Duration(seconds: 16)},
-  };
+  Future<void> _loadLetterData() async {
+    final jsonStr = await rootBundle.loadString('assets/kamusDetails/kamus_letter.json');
+    final Map<String, dynamic> data = json.decode(jsonStr);
+    final letterData = data[widget.letter];
+
+    if (letterData != null) {
+      _start = Duration(seconds: letterData['start']);
+      _end = Duration(seconds: letterData['end']);
+      _description = letterData['description'];
+
+      _controller = VideoPlayerController.asset('assets/kamusDetails/Kamus_isyarat.mp4');
+      await _controller.initialize();
+
+      setState(() {
+        _dataLoaded = true;
+      });
+
+      _controller.seekTo(_start);
+      _controller.play();
+
+      _stopTimer = Timer(_end - _start, () {
+        _controller.pause();
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    final start = _segments[widget.letter]!['start']!;
-    final end = _segments[widget.letter]!['end']!;
-    _controller = VideoPlayerController.asset('assets/videos/kamus_isyarat.mp4')
-      ..initialize().then((_) {
-        setState(() {});
-        _controller.seekTo(start);
-        _controller.play();
-
-        _stopTimer = Timer(end - start, () {
-          _controller.pause();
-        });
-      });
+    _loadLetterData();
   }
 
   @override
@@ -53,16 +62,72 @@ class _CardDetailPageState extends State<CardDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
-        title: Text('Detail Huruf ${widget.letter}'),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text(
+          'Detail Huruf ${widget.letter}',
+          style: TextStyle(color: Colors.black),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
-      body: Center(
-        child: _controller.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: _dataLoaded
+            ? Container(
+                decoration: BoxDecoration(
+                  color: Colors.yellow[100],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      widget.letter,
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue[900],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    AspectRatio(
+                      aspectRatio: _controller.value.aspectRatio,
+                      child: VideoPlayer(_controller),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      _description,
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue[700],
+                        foregroundColor: Colors.white,
+                        shape: StadiumBorder(),
+                      ),
+                      onPressed: () {
+                        _controller.seekTo(_start);
+                        _controller.play();
+                        _stopTimer?.cancel();
+                        _stopTimer = Timer(_end - _start, () {
+                          _controller.pause();
+                        });
+                      },
+                      icon: Icon(Icons.play_arrow),
+                      label: Text("Putar Ulang"),
+                    ),
+                  ],
+                ),
               )
-            : const CircularProgressIndicator(),
+            : const Center(child: CircularProgressIndicator()),
       ),
     );
   }

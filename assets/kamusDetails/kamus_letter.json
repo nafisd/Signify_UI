@@ -1,0 +1,127 @@
+{
+  "A": {
+    "start": 0,
+    "end": 2,
+    "description": "Huruf A dalam bahasa isyarat dilakukan dengan mengepalkan tangan."
+  },
+  "B": {
+    "start": 2,
+    "end": 4,
+    "description": "Huruf B ditunjukkan dengan telapak tangan terbuka menghadap depan."
+  },
+  "C": {
+    "start": 4,
+    "end": 6,
+    "description": "Huruf C membentuk tangan seperti bentuk huruf C."
+  },
+  "D": {
+    "start": 6,
+    "end": 8,
+    "description": "Huruf D menggunakan telunjuk tegak dan jari lainnya ditekuk."
+  },
+  "E": {
+    "start": 8,
+    "end": 10,
+    "description": "Huruf E dilakukan dengan jari-jari menggenggam ke arah telapak."
+  },
+  "F": {
+    "start": 10,
+    "end": 12,
+    "description": "Huruf F membentuk lingkaran dengan jempol dan telunjuk, jari lain ke atas."
+  },
+  "G": {
+    "start": 12,
+    "end": 14,
+    "description": "Huruf G menggunakan jempol dan telunjuk sejajar ke samping."
+  },
+  "H": {
+    "start": 14,
+    "end": 16,
+    "description": "Huruf H menggunakan dua jari (telunjuk dan tengah) menunjuk ke samping."
+  },
+  "I": {
+    "start": 16,
+    "end": 18,
+    "description": "Huruf I ditunjukkan dengan jari kelingking tegak, jari lain ditekuk."
+  },
+  "J": {
+    "start": 18,
+    "end": 20,
+    "description": "Huruf J digerakkan dengan membuat lengkungan menggunakan jari kelingking."
+  },
+  "K": {
+    "start": 20,
+    "end": 22,
+    "description": "Huruf K menggunakan telunjuk dan jari tengah membentuk huruf K."
+  },
+  "L": {
+    "start": 22,
+    "end": 24,
+    "description": "Huruf L dilakukan dengan jempol dan telunjuk membentuk huruf L."
+  },
+  "M": {
+    "start": 24,
+    "end": 26,
+    "description": "Huruf M dilakukan dengan tiga jari menutupi ibu jari."
+  },
+  "N": {
+    "start": 26,
+    "end": 28,
+    "description": "Huruf N dilakukan dengan dua jari menutupi ibu jari."
+  },
+  "O": {
+    "start": 28,
+    "end": 30,
+    "description": "Huruf O dibentuk dengan semua jari melengkung membentuk lingkaran."
+  },
+  "P": {
+    "start": 30,
+    "end": 32,
+    "description": "Huruf P mirip dengan K namun posisi tangan menghadap ke bawah."
+  },
+  "Q": {
+    "start": 32,
+    "end": 34,
+    "description": "Huruf Q dibentuk dengan jempol dan telunjuk menunjuk ke bawah."
+  },
+  "R": {
+    "start": 34,
+    "end": 36,
+    "description": "Huruf R dilakukan dengan menyilangkan jari telunjuk dan jari tengah."
+  },
+  "S": {
+    "start": 36,
+    "end": 38,
+    "description": "Huruf S ditunjukkan dengan mengepalkan tangan dan ibu jari di luar."
+  },
+  "T": {
+    "start": 38,
+    "end": 40,
+    "description": "Huruf T ditunjukkan dengan jempol diapit oleh telunjuk dan jari tengah."
+  },
+  "U": {
+    "start": 40,
+    "end": 42,
+    "description": "Huruf U dilakukan dengan dua jari berdiri sejajar."
+  },
+  "V": {
+    "start": 42,
+    "end": 44,
+    "description": "Huruf V dibentuk dengan dua jari terbuka membentuk huruf V."
+  },
+  "W": {
+    "start": 44,
+    "end": 46,
+    "description": "Huruf W dilakukan dengan tiga jari terbuka membentuk huruf W."
+  },
+  "X": {
+    "start": 46,
+    "end": 48,
+    "description": "Huruf X dibentuk dengan jari telunjuk membentuk kait."
+  },
+  "Y": {
+    "start": 48,
+    "end": 50,
+    "description": "Huruf Y dilakukan dengan jempol dan kelingking terbuka, jari lainnya dilipat."
+  }
+}
