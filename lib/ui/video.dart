@@ -24,7 +24,7 @@ class _YouTubeShortsScreenState extends State<YouTubeShortsScreen> {
   @override
   void deactivate() {
     for (var controller in _controllers) {
-      controller.pause(); // penting: hentikan semua video saat berpindah halaman
+      controller.pause(); 
     }
     super.deactivate();
   }
@@ -53,9 +53,9 @@ class _YouTubeShortsScreenState extends State<YouTubeShortsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE0F7FA), // Latar belakang langit biru muda
+      backgroundColor: const Color(0xFFE0F7FA),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFFF176), // Warna kuning pastel cerah
+        backgroundColor: const Color(0xFFFFF176), 
         elevation: 4,
         centerTitle: true,
         title: const Text(
@@ -63,7 +63,7 @@ class _YouTubeShortsScreenState extends State<YouTubeShortsScreen> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
-            color: Color(0xFF424242), // Abu gelap
+            color: Color(0xFF424242), 
           ),
         ),
         shape: const RoundedRectangleBorder(
@@ -76,7 +76,7 @@ class _YouTubeShortsScreenState extends State<YouTubeShortsScreen> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/allPage/background.jpg', // Latar belakang seperti di halaman utama
+              'assets/allPage/background.jpg',
               fit: BoxFit.cover,
             ),
           ),
@@ -118,7 +118,7 @@ class _YouTubeShortsScreenState extends State<YouTubeShortsScreen> {
                           return Center(
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.9,
-                              height: MediaQuery.of(context).size.height * 0.5, //ukuran setengah layar
+                              height: MediaQuery.of(context).size.height * 0.5,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 color: Colors.black,

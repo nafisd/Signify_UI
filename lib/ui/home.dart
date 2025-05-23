@@ -41,6 +41,8 @@ class HomePage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+
+                    // kamus
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -60,7 +62,7 @@ class HomePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(height: 10,),
-                            Image.asset('assets/allPage/kamus.png', width: 100,),
+                            Image.asset('assets/allPage/dictionary.png', width: 100,),
                             SizedBox(height: 10,),
                             Text(
                               'Kamus Bahasa Isyarat',
@@ -76,6 +78,8 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                     ),
+
+                    // video pembelajaran
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -95,7 +99,7 @@ class HomePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SizedBox(height: 10,),
-                              Image.asset('assets/allPage/video.png', width: 100,),
+                              Image.asset('assets/allPage/videoplayer.png', width: 100,),
                               SizedBox(height: 10,),
                               Text(
                                 'Video Pembelajaran',
@@ -114,7 +118,8 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20),
-                 // Kotak biru besar
+
+                 // camera translate
                 
                 GestureDetector(
                   onTap: () {
@@ -136,7 +141,7 @@ class HomePage extends StatelessWidget {
                         Expanded(
                           flex: 1,
                             child: Image.asset(
-                              'assets/allPage/cameraIcon.png',
+                              'assets/allPage/camera.png',
                               width: 200,          
                             ),
                         ),
