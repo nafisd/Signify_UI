@@ -22,6 +22,14 @@ class _YouTubeShortsScreenState extends State<YouTubeShortsScreen> {
   }
 
   @override
+  void deactivate() {
+    for (var controller in _controllers) {
+      controller.pause(); // penting: hentikan semua video saat berpindah halaman
+    }
+    super.deactivate();
+  }
+
+  @override
   void dispose() {
     for (var controller in _controllers) {
       controller.dispose();
@@ -45,63 +53,120 @@ class _YouTubeShortsScreenState extends State<YouTubeShortsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List<VideoItem>>(
-        future: _videosFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return Center(child: CircularProgressIndicator());
-          if (snapshot.hasError)
-            return Center(child: Text('Error: ${snapshot.error}'));
-          if (!snapshot.hasData || snapshot.data!.isEmpty)
-            return Center(child: Text('No videos found'));
+      backgroundColor: const Color(0xFFE0F7FA), // Latar belakang langit biru muda
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFFFF176), // Warna kuning pastel cerah
+        elevation: 4,
+        centerTitle: true,
+        title: const Text(
+          'Video Pembelajaran',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: Color(0xFF424242), // Abu gelap
+          ),
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
+      ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/allPage/background.jpg', // Latar belakang seperti di halaman utama
+              fit: BoxFit.cover,
+            ),
+          ),
+          FutureBuilder<List<VideoItem>>(
+            future: _videosFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return Center(child: Text('Terjadi kesalahan: ${snapshot.error}'));
+              }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(child: Text('Video tidak ditemukan'));
+              }
 
-          final videos = snapshot.data!;
+              final videos = snapshot.data!;
 
-          // Prepare controllers only once
-          if (_controllers.isEmpty) {
-            _controllers.addAll(
-              videos.map((video) => _createController(video.videoId)),
-            );
-          }
+              if (_controllers.isEmpty) {
+                _controllers.addAll(
+                  videos.map((video) => _createController(video.videoId)),
+                );
+              }
 
-          return PageView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: videos.length,
-            itemBuilder: (context, index) {
-              final controller = _controllers[index];
-              return Stack(
-                children: [
-                  YoutubePlayerBuilder(
-                    player: YoutubePlayer(
-                      controller: controller,
-                      showVideoProgressIndicator: true,
-                    ),
-                    builder: (context, player) {
-                      return Container(
-                        color: Colors.black,
-                        child: Center(child: player),
-                      );
-                    },
-                  ),
-                  Positioned(
-                    bottom: 30,
-                    left: 16,
-                    right: 16,
-                    child: Text(
-                      videos[index].title,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        shadows: [Shadow(blurRadius: 10, color: Colors.black)],
+              return PageView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: videos.length,
+                itemBuilder: (context, index) {
+                  final controller = _controllers[index];
+                  return Stack(
+                    children: [
+                      YoutubePlayerBuilder(
+                        player: YoutubePlayer(
+                          controller: controller,
+                          showVideoProgressIndicator: true,
+                          progressIndicatorColor: Colors.amber,
+                        ),
+                        builder: (context, player) {
+                          return Center(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              height: MediaQuery.of(context).size.height * 0.5, //ukuran setengah layar
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.black,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    blurRadius: 10,
+                                    offset: Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: player,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
+                      Positioned(
+                        bottom: 40,
+                        left: 16,
+                        right: 16,
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            videos[index].title,
+                            style: const TextStyle(
+                              color: Colors.black87,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               );
             },
-          );
-        },
+          ),
+        ],
       ),
     );
   }
