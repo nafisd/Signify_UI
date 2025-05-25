@@ -31,10 +31,16 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Logo
+                Column(
+                 children: [ Container(
+                  width: 100,
+                  child: Image (image: AssetImage('assets/allPage/Teman_Isyarat_Logo.png'),),
+                ),
                 Container(
-                  width: 300,
-                  height: 200 ,
-                  child: Image (image: AssetImage('assets/allPage/newLogo.png'),),
+                  width: 100,
+                  child: Image(image: AssetImage('assets/allPage/Teman_Isyarat_Name.png'),),
+                )
+                 ]
                 ),
                 SizedBox(height: 30),
                 // Dua kotak biru kecil
@@ -61,8 +67,8 @@ class HomePage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SizedBox(height: 10,),
-                            Image.asset('assets/allPage/dictionary.png', width: 100,),
+                            SizedBox(height: 20,),
+                            Image.asset('assets/allPage/kamus.png', width: 90,),
                             SizedBox(height: 10,),
                             Text(
                               'Kamus Bahasa Isyarat',
@@ -98,8 +104,8 @@ class HomePage extends StatelessWidget {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SizedBox(height: 10,),
-                              Image.asset('assets/allPage/videoplayer.png', width: 100,),
+                              SizedBox(height: 20,),
+                              Image.asset('assets/allPage/video.png', width: 90,),
                               SizedBox(height: 10,),
                               Text(
                                 'Video Pembelajaran',
@@ -138,22 +144,25 @@ class HomePage extends StatelessWidget {
                     child:  Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Expanded(
-                          flex: 1,
-                            child: Image.asset(
-                              'assets/allPage/camera.png',
-                              width: 200,          
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 24.0),
+                          child: Expanded(
+                            flex: 1,
+                              child: Image.asset(
+                                'assets/allPage/cameraIcon.png',
+                                width: 100,          
+                              ),
+                          ),
                         ),
                     // space between icon and text
                         Expanded(
-                          flex: 1,
+                          flex: 2,
                           child: Center(
                             child: Text(
                               'Kamera Terjemahan',
                               style: TextStyle(
                                 fontFamily: 'Fredoka',
-                                color: Color.fromARGB(255, 81, 81, 180),
+                                color: Color.fromARGB(255, 255, 70, 107),
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700
                               ),
@@ -166,7 +175,7 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
+                ), 
                 
                 SizedBox(height: 40),
           

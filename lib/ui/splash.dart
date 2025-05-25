@@ -29,13 +29,22 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.lightBlue,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/allPage/logo.png', width: 200), // Customize this
-            const SizedBox(height: 20),
+          Column(
+            children: [ Container(
+              width: 100,
+              child: Image (image: AssetImage('assets/allPage/Teman_Isyarat_Logo.png'),),
+                ),
+                Container(
+                  width: 100,
+                  child: Image(image: AssetImage('assets/allPage/Teman_Isyarat_Name.png'),),
+                )
+                 ]
+                ),
           ],
         ),
       ),

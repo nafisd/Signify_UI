@@ -49,12 +49,20 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_native_splash: ^2.3.10
   
+flutter_native_splash:
+  color: "#ADD8E6" # Use the same color as your splash screen (lightBlue)
+  image: assets/allPage/Teman_Isyarat_Logo.png
+  branding: assets/allPage/Teman_Isyarat_Name.png
+  android: true
+  ios: true
+  fullscreen: true
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/allPage/logo.png"
+  image_path: "assets/allPage/Teman_Isyarat_Logo.png"
   min_sdk_android: 21
 
   # The "flutter_lints" package below contains a set of recommended lints to

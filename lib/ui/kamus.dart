@@ -70,79 +70,89 @@ class _KamusPageState extends State<KamusPage> {
       extendBodyBehindAppBar: false,
       backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
+        backgroundColor: const Color(0xFFFFF176), 
+        elevation: 4,
+        centerTitle: true,
         title: const Text(
           'Kamus Abjad Bahasa Isyarat',
-          style: TextStyle(color: Colors.black, fontSize: 16),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: Color(0xFF424242), 
+          ),
         ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+        shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+        bottom: Radius.circular(20),
+          ),
         ),
       ),
       body: SafeArea(
-        child: kamusData.isEmpty
-            ? Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/allPage/background.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Center(child: CircularProgressIndicator()),
-              )
-            : Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    // Search Bar
-                    TextField(
-                      controller: searchController,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        hintText: 'Cari huruf...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      onSubmitted: (value) {
-                        _scrollToFirstMatch(value);
-                      },
+  child: Container(
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage('assets/allPage/background.jpg'),
+        fit: BoxFit.cover,
+      ),
+    ),
+    child: kamusData.isEmpty
+        ? Center(child: CircularProgressIndicator())
+        : Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                // Search Bar
+                TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    hintText: 'Cari huruf...',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    SizedBox(height: 16),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                  onSubmitted: (value) {
+                    _scrollToFirstMatch(value);
+                  },
+                ),
+                SizedBox(height: 16),
 
-                    // Grid View
-                    Expanded(
-                      child: GridView.builder(
-                        controller: scrollController,
-                        itemCount: filteredData.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          childAspectRatio: 1,
-                        ),
-                        itemBuilder: (context, index) {
-                          final item = filteredData[index];
-                          return KamusCard(
-                            title: item['title'],
-                            imagePath: item['image'],
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => CardDetailPage(letter: item['title']),
-                              ),
-                              );
-                            },
+                // Grid View
+                Expanded(
+                  child: GridView.builder(
+                    controller: scrollController,
+                    itemCount: filteredData.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 1,
+                    ),
+                    itemBuilder: (context, index) {
+                      final item = filteredData[index];
+                      return KamusCard(
+                        title: item['title'],
+                        imagePath: item['image'],
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CardDetailPage(letter: item['title']),
+                            ),
                           );
                         },
-                      ),
-                    ),
-                  ],
+                      );
+                    },
+                  ),
                 ),
-              ),
-      ),
+              ],
+            ),
+          ),
+  ),
+),
+
     );
   }
 }
