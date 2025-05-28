@@ -34,7 +34,7 @@ class CameraControllerService {
 
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('http://192.168.68.184:5000/predict'), // Ganti IP sesuai server
+        Uri.parse('http://10.214.101.137:5000/predict'), // Ganti IP sesuai server
       );
       request.files.add(await http.MultipartFile.fromPath('image', image.path));
 

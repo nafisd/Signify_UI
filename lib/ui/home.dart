@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_ui_sign/QuizPage/quiz.dart';
 import 'package:flutter_ui_sign/ui/camera.dart';
 import 'package:flutter_ui_sign/ui/kamus.dart';
 import 'package:camera/camera.dart';
@@ -127,54 +128,93 @@ class HomePage extends StatelessWidget {
 
                  // camera translate
                 
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => CameraScreen(camera: cameras.first,)),
-                  );
-                  },
-                  child: Container(
-                    width: 320,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(239, 255, 211, 220),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child:  Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 24.0),
-                          child: Expanded(
-                            flex: 1,
-                              child: Image.asset(
-                                'assets/allPage/cameraIcon.png',
-                                width: 100,          
-                              ),
-                          ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => CameraScreen(camera: cameras.first,)),
+                      );
+                      },
+                      child: Container(
+                        width: 150,
+                        height: 175,
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(239, 255, 211, 220),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                    // space between icon and text
-                        Expanded(
-                          flex: 2,
-                          child: Center(
-                            child: Text(
+                        child:  Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 10,),
+                            Image.asset(
+                                'assets/allPage/cameraIcon.png',
+                                width: 90,          
+                              ),
+                              SizedBox(height: 10,),
+                        // space between icon and text
+                            Text(
                               'Kamera Terjemahan',
                               style: TextStyle(
                                 fontFamily: 'Fredoka',
                                 color: Color.fromARGB(255, 255, 70, 107),
-                                fontSize: 24,
+                                fontSize: 17,
                                 fontWeight: FontWeight.w700
                               ),
                               softWrap: true,
                               overflow: TextOverflow.visible,
                               textAlign: TextAlign.center,
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+
+                    //quiz
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => QuizHomePage(cameras: cameras,)),
+                      );
+                      },
+                      child: Container(
+                        width: 150,
+                        height: 175,
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(237, 34, 165, 246),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child:  Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 10,),
+                            Image.asset(
+                                'assets/allPage/games.png',
+                                width: 90,          
+                              ),
+                              SizedBox(height: 10,),
+                            Text(
+                              'Mari Bermain Menebak',
+                              style: TextStyle(
+                                fontFamily: 'Fredoka',
+                                color: Color.fromARGB(255, 19, 22, 194),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700
+                              ),
+                              softWrap: true,
+                              overflow: TextOverflow.visible,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ), 
                 
                 SizedBox(height: 40),

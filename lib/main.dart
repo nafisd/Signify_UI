@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_sign/ui/home.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_ui_sign/ui/splash.dart';
 
