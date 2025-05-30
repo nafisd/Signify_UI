@@ -1,8 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_ui_sign/utils/cards.dart';
 import 'package:flutter_ui_sign/utils/cards_detail.dart';
+import 'package:flutter_ui_sign/controllers/kamus_controller.dart';
 
 class KamusPage extends StatefulWidget {
   @override
@@ -10,67 +9,29 @@ class KamusPage extends StatefulWidget {
 }
 
 class _KamusPageState extends State<KamusPage> {
-  List<dynamic> kamusData = [];
-  List<dynamic> filteredData = [];
-  TextEditingController searchController = TextEditingController();
-  ScrollController scrollController = ScrollController();
+  final controller = KamusController();
 
   @override
   void initState() {
     super.initState();
-    loadKamusData();
-    searchController.addListener(_onSearchChanged);
+    controller.init();
+    controller.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
-    searchController.removeListener(_onSearchChanged);
-    searchController.dispose();
-    scrollController.dispose();
+    controller.dispose();
     super.dispose();
-  }
-
-  Future<void> loadKamusData() async {
-    final String response =
-        await rootBundle.loadString('assets/kamus_data.json');
-    final data = json.decode(response);
-    setState(() {
-      kamusData = data;
-      filteredData = data;
-    });
-  }
-
-  void _onSearchChanged() {
-    String query = searchController.text.toLowerCase();
-    setState(() {
-      filteredData = kamusData.where((item) {
-        final title = item['title'].toString().toLowerCase();
-        return title.contains(query);
-      }).toList();
-    });
-  }
-
-  void _scrollToFirstMatch(String query) {
-    final index = filteredData.indexWhere((item) =>
-        item['title'].toString().toLowerCase().contains(query.toLowerCase()));
-
-    if (index != -1) {
-      final double rowHeight = 200; // kira-kira tinggi 1 grid item termasuk spacing
-      scrollController.animateTo(
-        (index ~/ 2) * rowHeight, // index ~/ 2 karena 2 kolom per baris
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-      );
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: false,
       backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFFF176), 
+        backgroundColor: const Color(0xFFFFF176),
         elevation: 4,
         centerTitle: true,
         title: const Text(
@@ -78,81 +39,79 @@ class _KamusPageState extends State<KamusPage> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
-            color: Color(0xFF424242), 
+            color: Color(0xFF424242),
           ),
         ),
         shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-        bottom: Radius.circular(20),
-          ),
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
       ),
       body: SafeArea(
-  child: Container(
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage('assets/allPage/background.jpg'),
-        fit: BoxFit.cover,
-      ),
-    ),
-    child: kamusData.isEmpty
-        ? Center(child: CircularProgressIndicator())
-        : Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                // Search Bar
-                TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    hintText: 'Cari huruf...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  onSubmitted: (value) {
-                    _scrollToFirstMatch(value);
-                  },
-                ),
-                SizedBox(height: 16),
-
-                // Grid View
-                Expanded(
-                  child: GridView.builder(
-                    controller: scrollController,
-                    itemCount: filteredData.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: 1,
-                    ),
-                    itemBuilder: (context, index) {
-                      final item = filteredData[index];
-                      return KamusCard(
-                        title: item['title'],
-                        imagePath: item['image'],
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CardDetailPage(letter: item['title']),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/allPage/background.jpg'),
+              fit: BoxFit.cover,
             ),
           ),
-  ),
-),
-
+          child: controller.isLoading
+              ? Center(child: CircularProgressIndicator())
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: controller.searchController,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.search),
+                          hintText: 'Cari huruf...',
+                          suffixIcon: controller.searchController.text.isNotEmpty
+                              ? IconButton(
+                                  icon: Icon(Icons.clear),
+                                  onPressed: controller.clearSearch,
+                                )
+                              : null,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        onSubmitted: controller.scrollToFirstMatch,
+                      ),
+                      SizedBox(height: 16),
+                      Expanded(
+                        child: GridView.builder(
+                          controller: controller.scrollController,
+                          itemCount: controller.filteredData.length,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                            childAspectRatio: 1,
+                          ),
+                          itemBuilder: (context, index) {
+                            final item = controller.filteredData[index];
+                            return KamusCard(
+                              title: item['title'],
+                              imagePath : item['image_url'],
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CardDetailPage(letter: item['title']),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+        ),
+      ),
     );
   }
 }

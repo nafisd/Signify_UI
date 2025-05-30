@@ -1,7 +1,5 @@
-import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:video_player/video_player.dart';
 
 class CardDetailPage extends StatefulWidget {
@@ -14,48 +12,51 @@ class CardDetailPage extends StatefulWidget {
 
 class _CardDetailPageState extends State<CardDetailPage> {
   late VideoPlayerController _controller;
-  Timer? _stopTimer;
-  String _description = '';
-  Duration _start = Duration.zero;
-  Duration _end = Duration.zero;
   bool _dataLoaded = false;
-
-  Future<void> _loadLetterData() async {
-    final jsonStr = await rootBundle.loadString('assets/kamusDetails/kamus_letter.json');
-    final Map<String, dynamic> data = json.decode(jsonStr);
-    final letterData = data[widget.letter];
-
-    if (letterData != null) {
-      _start = Duration(seconds: letterData['start']);
-      _end = Duration(seconds: letterData['end']);
-      _description = letterData['description'];
-
-      _controller = VideoPlayerController.asset('assets/kamusDetails/Kamus_isyarat.mp4');
-      await _controller.initialize();
-
-      setState(() {
-        _dataLoaded = true;
-      });
-
-      _controller.seekTo(_start);
-      _controller.play();
-
-      _stopTimer = Timer(_end - _start, () {
-        _controller.pause();
-      });
-    }
-  }
+  String _description = '';
+  String _videoUrl = '';
 
   @override
   void initState() {
     super.initState();
-    _loadLetterData();
+    _loadDataFromSupabase();
+  }
+
+  Future<void> _loadDataFromSupabase() async {
+    try {
+      final supabase = Supabase.instance.client;
+      final response = await supabase
+          .from('kamus')
+          .select('video_url, description')
+          .eq('title', widget.letter)
+          .single();
+
+      final url = response['video_url'] ?? '';
+      _description = response['description'] ?? '';
+
+      if (url.isNotEmpty) {
+        _videoUrl = url;
+        _controller = VideoPlayerController.networkUrl(Uri.parse(_videoUrl));
+        await _controller.initialize();
+
+        setState(() {
+          _dataLoaded = true;
+        });
+
+        _controller.play();
+      } else {
+        print('Video URL kosong untuk huruf ${widget.letter}');
+      }
+    } catch (e) {
+      print('Gagal memuat data dari Supabase: $e');
+    }
   }
 
   @override
   void dispose() {
-    _stopTimer?.cancel();
-    _controller.dispose();
+    if (_dataLoaded) {
+      _controller.dispose();
+    }
     super.dispose();
   }
 
@@ -68,10 +69,10 @@ class _CardDetailPageState extends State<CardDetailPage> {
         elevation: 0,
         title: Text(
           'Detail Huruf ${widget.letter}',
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -103,7 +104,7 @@ class _CardDetailPageState extends State<CardDetailPage> {
                     const SizedBox(height: 16),
                     Text(
                       _description,
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 24),
@@ -111,18 +112,14 @@ class _CardDetailPageState extends State<CardDetailPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue[700],
                         foregroundColor: Colors.white,
-                        shape: StadiumBorder(),
+                        shape: const StadiumBorder(),
                       ),
                       onPressed: () {
-                        _controller.seekTo(_start);
+                        _controller.seekTo(Duration.zero);
                         _controller.play();
-                        _stopTimer?.cancel();
-                        _stopTimer = Timer(_end - _start, () {
-                          _controller.pause();
-                        });
                       },
-                      icon: Icon(Icons.play_arrow),
-                      label: Text("Putar Ulang"),
+                      icon: const Icon(Icons.play_arrow),
+                      label: const Text("Putar Ulang"),
                     ),
                   ],
                 ),

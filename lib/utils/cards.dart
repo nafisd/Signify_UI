@@ -9,7 +9,7 @@ class KamusCard extends StatelessWidget {
     Key? key,
     required this.title,
     required this.imagePath,
-    this.onTap
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -25,7 +25,6 @@ class KamusCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // Huruf besar di atas
             Text(
               title,
               style: TextStyle(
@@ -34,9 +33,8 @@ class KamusCard extends StatelessWidget {
                 color: Colors.blue[900],
               ),
             ),
-      
-            // Gambar tangan/objek
-            Image.asset(
+            const SizedBox(height: 8),
+            Image.network(
               imagePath,
               width: 100,
               height: 100,

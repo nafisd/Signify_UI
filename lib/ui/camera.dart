@@ -84,7 +84,7 @@ class _CameraScreenState extends State<CameraScreen> {
                         width: _cameraService.controller.value.previewSize!.height,
                         height: _cameraService.controller.value.previewSize!.width,
                         child: CameraPreview(_cameraService.controller),
-                      ),
+                      ),   
                     ),
                   );
                 } else {

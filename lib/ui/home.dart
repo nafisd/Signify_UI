@@ -91,7 +91,7 @@ class HomePage extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => YouTubeShortsScreen(genre: 'SIBI'),)
+                          MaterialPageRoute(builder: (context) => YouTubeShortsScreen(genre: 'Isyarat SIBI'),)
                         );
                       },
                       child: Container(
