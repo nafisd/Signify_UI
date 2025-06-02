@@ -1,39 +1,91 @@
-class QuizQuestion {
-  final String correctAnswer;
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:vibration/vibration.dart';
+import 'package:confetti/confetti.dart';
+import 'package:flutter_ui_sign/QuizPage/models/quiz_model.dart';
 
-  QuizQuestion({required this.correctAnswer});
-}
-
-class QuizCameraController {
-  final List<QuizQuestion> items = [
-    QuizQuestion(correctAnswer: 'A'),
-    QuizQuestion(correctAnswer: 'B'),
-    QuizQuestion(correctAnswer: 'C'),
-    QuizQuestion(correctAnswer: 'D'),
-    QuizQuestion(correctAnswer: 'E'),
-  ];
-
+class QuizController extends ChangeNotifier {
+  final List<QuizItem> _questions = [];
   int _currentIndex = 0;
-  int score = 0;
+  int _score = 0;
+  String? _selectedAnswer;
+  bool _showResultPopup = false;
+  bool _isCorrect = false;
+  Timer? _nextQuestionTimer;
 
-  QuizQuestion get currentQuestion => items[_currentIndex];
 
-  bool checkAnswer(String prediction) {
-    final isCorrect = prediction.toUpperCase() == currentQuestion.correctAnswer.toUpperCase();
-    if (isCorrect) score++;
-    return isCorrect;
-  }
+  ConfettiController confettiController = ConfettiController(duration: const Duration(seconds: 2));
 
-  bool next() {
-    if (_currentIndex < items.length - 1) {
-      _currentIndex++;
-      return true;
-    }
-    return false;
-  }
+  List<QuizItem> get questions => _questions;
+  int get currentIndex => _currentIndex;
+  int get score => _score;
+  String? get selectedAnswer => _selectedAnswer;
+  bool get showResultPopup => _showResultPopup;
+  bool get isCorrect => _isCorrect;
 
-  void reset() {
+  Future<void> initQuiz() async {
+    final response = await Supabase.instance.client
+        .from('quiz_question')
+        .select()
+        .limit(10);
+
+    final data = response as List;
+    _questions.clear();
+    _questions.addAll(data.map((e) => QuizItem.fromMap(e)).toList());
+    _questions.shuffle();
+
     _currentIndex = 0;
-    score = 0;
+    _score = 0;
+    _selectedAnswer = null;
+    _showResultPopup = false;
+
+    notifyListeners();
+  }
+
+  Future<void> checkAnswer(String selected) async {
+    final currentQuestion = _questions[_currentIndex];
+    _selectedAnswer = selected;
+    _isCorrect = selected == currentQuestion.correctAnswer;
+    _showResultPopup = true;
+
+    if (_isCorrect) {
+      _score++;
+      confettiController.play();
+    } else {
+      if (await Vibration.hasVibrator()) {
+        Vibration.vibrate(duration: 300);
+      }
+    }
+
+    notifyListeners();
+
+    _nextQuestionTimer = Timer(const Duration(seconds: 3), nextQuestion);
+  }
+
+  void nextQuestion() {
+    if (_currentIndex < _questions.length - 1) {
+      _currentIndex++;
+      _selectedAnswer = null;
+      _showResultPopup = false;
+      notifyListeners();
+    } else {
+      // show final popup handled by UI
+    }
+  }
+
+  void restartQuiz() {
+    _currentIndex = 0;
+    _score = 0;
+    _selectedAnswer = null;
+    _showResultPopup = false;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _nextQuestionTimer?.cancel();
+    confettiController.dispose();
+    super.dispose();
   }
 }

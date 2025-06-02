@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class CameraControllerService {
+class CameraControllerService extends ChangeNotifier{
   final CameraDescription camera;
   late CameraController _controller;
   bool _isInitialized = false;
@@ -34,7 +35,7 @@ class CameraControllerService {
 
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('http://192.168.18.185:5000/predict'),
+        Uri.parse('http://192.168.18.130:5000/predict'),
       );
       request.files.add(await http.MultipartFile.fromPath('image', image.path));
 

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter_ui_sign/QuizPage/controller/quiz_controller.dart';
+import 'package:flutter_ui_sign/controllers/custom_camera_controller.dart';
 import 'package:flutter_ui_sign/ui/splash.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 late List<CameraDescription> cameras;
@@ -12,7 +15,14 @@ void main() async {
   );
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => QuizController(),),
+      ChangeNotifierProvider(create: (_) => CustomCameraController()),
+    ],
+    child:
+      const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {

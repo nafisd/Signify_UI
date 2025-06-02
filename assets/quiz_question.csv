@@ -1,0 +1,11 @@
+id,image_url,correct_answer,options
+1,https://[YOUR_SUPABASE_URL]/storage/v1/object/public/quiz_images/isyarat_b.png,B,"{A,B,C,D}"
+2,https://[YOUR_SUPABASE_URL]/storage/v1/object/public/quiz_images/isyarat_d.png,D,"{B,C,D,E}"
+3,https://[YOUR_SUPABASE_URL]/storage/v1/object/public/quiz_images/isyarat_a.png,A,"{A,F,G,H}"
+4,https://[YOUR_SUPABASE_URL]/storage/v1/object/public/quiz_images/isyarat_c.png,C,"{Z,C,X,Y}"
+5,https://[YOUR_SUPABASE_URL]/storage/v1/object/public/quiz_images/isyarat_e.png,E,"{E,R,T,Y}"
+6,https://[YOUR_SUPABASE_URL]/storage/v1/object/public/quiz_images/isyarat_f.png,F,"{Q,W,E,F}"
+7,https://[YOUR_SUPABASE_URL]/storage/v1/object/public/quiz_images/isyarat_g.png,G,"{G,H,J,K}"
+8,https://[YOUR_SUPABASE_URL]/storage/v1/object/public/quiz_images/isyarat_h.png,H,"{L,M,N,H}"
+9,https://[YOUR_SUPABASE_URL]/storage/v1/object/public/quiz_images/isyarat_i.png,I,"{U,I,O,P}"
+10,https://[YOUR_SUPABASE_URL]/storage/v1/object/public/quiz_images/isyarat_j.png,J,"{A,S,D,J}"
