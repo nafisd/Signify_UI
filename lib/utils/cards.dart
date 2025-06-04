@@ -32,8 +32,7 @@ class KamusCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: Colors.blue[900],
               ),
-            ),
-            const SizedBox(height: 8),
+            ),  
             Image.network(
               imagePath,
               width: 100,

@@ -35,7 +35,7 @@ class CameraControllerService extends ChangeNotifier{
 
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('http://192.168.18.130:5000/predict'),
+        Uri.parse('http://192.168.41.223:5000/predict'),
       );
       request.files.add(await http.MultipartFile.fromPath('image', image.path));
 

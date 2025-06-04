@@ -105,7 +105,7 @@ class _CameraScreenState extends State<CameraScreen> {
           Padding(
             padding: const EdgeInsets.all(8),
             child: Text(
-              'Kalimat: $_fullText',
+              'Kata: $_fullText',
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ui_sign/QuizPage/controller/quiz_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:confetti/confetti.dart';
-import 'package:flutter_ui_sign/QuizPage/models/quiz_model.dart';
 
 class QuizChoicePage extends StatefulWidget {
   const QuizChoicePage({super.key});
